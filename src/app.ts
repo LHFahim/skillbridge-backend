@@ -4,6 +4,7 @@ import express from "express";
 import { auth } from "./lib/auth";
 import errorHandler from "./middlewares/globalErrorHandler";
 import { notFoundHandler } from "./middlewares/notFound";
+import { userRouter } from "./modules/user/user.router";
 
 const app = express();
 
@@ -17,6 +18,10 @@ app.use(
 app.all("/api/auth/*splat", toNodeHandler(auth));
 
 app.use(express.json());
+
+app.get("/ping", (_, res) => res.send("pong"));
+
+app.use("/api/users", userRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello, World!");
