@@ -11,8 +11,8 @@ model User {
   sessions Session[]
   accounts Account[]
 
-  role         UserRolesEnum  @default(STUDENT)
-  status       UserStatusEnum @default(ACTIVE)
+  role         UserRolesEnum       @default(STUDENT)
+  status       UserStatusEnum      @default(ACTIVE)
   phone        String?
   tutorProfile TutorProfileEntity?
 

@@ -1,0 +1,18 @@
+model AvailabilitySlot {
+  id String @id @default(cuid())
+
+  tutorProfileId String
+  tutorProfile   TutorProfileEntity @relation(fields: [tutorProfileId], references: [id], onDelete: Cascade)
+
+  startAt DateTime
+  endAt   DateTime
+  status  AvailabilityStatusEnum @default(OPEN)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum AvailabilityStatusEnum {
+  OPEN
+  BOOKED
+}
