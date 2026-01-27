@@ -1,4 +1,4 @@
-model AvailabilitySlot {
+model AvailabilitySlotEntity {
   id String @id @default(cuid())
 
   tutorProfileId String
@@ -10,6 +10,9 @@ model AvailabilitySlot {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  booking   Booking?
+
+  @@map("AvailabilitySlot")
 }
 
 enum AvailabilityStatusEnum {

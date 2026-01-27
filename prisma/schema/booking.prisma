@@ -1,0 +1,32 @@
+enum BookingStatusEnum {
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+enum CancelledByEnum {
+  STUDENT
+  TUTOR
+  ADMIN
+}
+
+model Booking {
+  id String @id
+
+  studentId String
+  student   User   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  tutorProfileId String
+  tutorProfile   TutorProfileEntity @relation(fields: [tutorProfileId], references: [id], onDelete: Cascade)
+
+  slotId String                 @unique
+  slot   AvailabilitySlotEntity @relation(fields: [slotId], references: [id], onDelete: Cascade)
+
+  status BookingStatusEnum @default(CONFIRMED)
+
+  cancelledBy  CancelledByEnum?
+  cancelReason String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
