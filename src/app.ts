@@ -4,6 +4,7 @@ import express from "express";
 import { auth } from "./lib/auth";
 import errorHandler from "./middlewares/globalErrorHandler";
 import { notFoundHandler } from "./middlewares/notFound";
+import { tutorRouter } from "./modules/tutor/tutor.router";
 import { userRouter } from "./modules/user/user.router";
 
 const app = express();
@@ -22,6 +23,7 @@ app.use(express.json());
 app.get("/ping", (_, res) => res.send("pong"));
 
 app.use("/api/users", userRouter);
+app.use("/api/tutors", tutorRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello, World!");
