@@ -1,4 +1,8 @@
-import { CurrencyEnum, Prisma } from "../../../prisma/generated/prisma/client";
+import {
+  AvailabilityStatusEnum,
+  CurrencyEnum,
+  Prisma,
+} from "../../../prisma/generated/prisma/client";
 import { prisma } from "../../lib/prisma";
 
 const getAllTutors = async ({
@@ -117,6 +121,55 @@ const getAllTutors = async ({
   };
 };
 
+const getSingleTutor = async (tutorProfileId: string) => {
+  return prisma.tutorProfileEntity.findFirst({
+    where: {
+      id: tutorProfileId,
+      isActive: true,
+    },
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      categories: true,
+
+      reviewEntities: {
+        select: {
+          id: true,
+          rating: true,
+          comment: true,
+          createdAt: true,
+          student: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
+
+      availabilitySlots: {
+        where: {
+          status: AvailabilityStatusEnum.OPEN,
+          startAt: {
+            gt: new Date(),
+          },
+        },
+        orderBy: {
+          startAt: "asc",
+        },
+      },
+    },
+  });
+};
+
 export const tutorService = {
   getAllTutors,
+  getSingleTutor,
 };

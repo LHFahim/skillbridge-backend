@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import paginationSortingHelper from "../../helpers/paginationSortingHelpers";
 import { tutorService } from "./tutor.service";
 
-export const getAllTutors = async (req: Request, res: Response) => {
+const getAllTutors = async (req: Request, res: Response) => {
   try {
     const search =
       typeof req.query.search === "string" ? req.query.search : undefined;
@@ -56,6 +56,28 @@ export const getAllTutors = async (req: Request, res: Response) => {
   }
 };
 
+const getSingleTutor = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id!;
+
+    const tutor = await tutorService.getSingleTutor(id);
+
+    if (!tutor) {
+      return res.status(404).json({
+        message: "Tutor not found",
+      });
+    }
+
+    return res.status(200).json(tutor);
+  } catch (e) {
+    return res.status(400).json({
+      error: "Fetching tutor failed",
+      details: e,
+    });
+  }
+};
+
 export const tutorController = {
   getAllTutors,
+  getSingleTutor,
 };
