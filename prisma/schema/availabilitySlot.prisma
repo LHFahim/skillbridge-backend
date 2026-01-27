@@ -12,7 +12,7 @@ model AvailabilitySlotEntity {
   updatedAt DateTime @updatedAt
   booking   Booking?
 
-  @@map("AvailabilitySlot")
+  @@map("availabilitySlots")
 }
 
 enum AvailabilityStatusEnum {

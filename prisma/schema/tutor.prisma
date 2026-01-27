@@ -15,9 +15,10 @@ model TutorProfileEntity {
   updatedAt         DateTime                 @updatedAt
   availabilitySlots AvailabilitySlotEntity[]
   bookings          Booking[]
+  reviewEntities    ReviewEntity[]
 
   @@index([userId])
-  @@map("TutorProfile")
+  @@map("tutorProfiles")
 }
 
 enum CurrencyEnum {

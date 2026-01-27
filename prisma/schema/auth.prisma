@@ -11,11 +11,12 @@ model User {
   sessions Session[]
   accounts Account[]
 
-  role         UserRolesEnum       @default(STUDENT)
-  status       UserStatusEnum      @default(ACTIVE)
-  phone        String?
-  tutorProfile TutorProfileEntity?
-  bookings     Booking[]
+  role           UserRolesEnum       @default(STUDENT)
+  status         UserStatusEnum      @default(ACTIVE)
+  phone          String?
+  tutorProfile   TutorProfileEntity?
+  bookings       Booking[]
+  reviewEntities ReviewEntity[]      @relation("studentReviews")
 
   @@unique([email])
   @@map("user")
