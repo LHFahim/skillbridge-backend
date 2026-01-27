@@ -1,13 +1,15 @@
 
 
-model TutorProfile {
+model TutorProfileEntity {
   id     String @id
   userId String @unique
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   hourlyRate      Int
-  currency        String @default("AUD")
+  currency        CurrencyEnum @default(AUD)
   yearsExperience Int
+
+  categories      CategoryEntity[]
 
   isActive Boolean @default(true)
 
@@ -15,4 +17,15 @@ model TutorProfile {
   updatedAt DateTime @updatedAt
 
   @@index([userId])
+	@@map("TutorProfile")
 }
+
+
+enum CurrencyEnum {
+  AUD
+  USD
+  EUR
+  BDT
+}
+
+

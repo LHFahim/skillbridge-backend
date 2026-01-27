@@ -14,7 +14,7 @@ model User {
   role         UserRolesEnum  @default(STUDENT)
   status       UserStatusEnum @default(ACTIVE)
   phone        String?
-  tutorProfile TutorProfile?
+  tutorProfile TutorProfileEntity?
 
   @@unique([email])
   @@map("user")

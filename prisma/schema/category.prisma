@@ -1,0 +1,11 @@
+model CategoryEntity {
+  id        String    @id 
+  name      String    @unique
+  slug      String    @unique
+
+
+  tutors    TutorProfileEntity[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
