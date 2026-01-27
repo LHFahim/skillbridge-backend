@@ -1,0 +1,18 @@
+
+
+model TutorProfile {
+  id     String @id
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  hourlyRate      Int
+  currency        String @default("AUD")
+  yearsExperience Int
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}

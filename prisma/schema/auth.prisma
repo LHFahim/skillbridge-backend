@@ -1,20 +1,20 @@
-
 model User {
-  id            String    @id
+  id            String  @id
   name          String
-  email         String 
-  emailVerified Boolean   @default(false)
+  email         String
+  emailVerified Boolean @default(false)
   image         String?
-  
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
 
-  sessions      Session[]
-  accounts      Account[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  role   UserRolesEnum @default(STUDENT)
-  status UserStatusEnum @default(ACTIVE)
-  phone  String?
+  sessions Session[]
+  accounts Account[]
+
+  role         UserRolesEnum  @default(STUDENT)
+  status       UserStatusEnum @default(ACTIVE)
+  phone        String?
+  tutorProfile TutorProfile?
 
   @@unique([email])
   @@map("user")
@@ -67,7 +67,6 @@ model Verification {
   @@index([identifier])
   @@map("verification")
 }
-
 
 enum UserRolesEnum {
   ADMIN
