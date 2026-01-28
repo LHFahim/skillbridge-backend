@@ -77,7 +77,26 @@ const getSingleTutor = async (req: Request, res: Response) => {
   }
 };
 
+export const createTutorProfile = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.id;
+
+    const tutorProfile = await tutorService.createTutorProfile(
+      userId,
+      req.body,
+    );
+
+    return res.status(201).json(tutorProfile);
+  } catch (e) {
+    return res.status(400).json({
+      error: "Tutor profile creation failed",
+      details: e,
+    });
+  }
+};
+
 export const tutorController = {
   getAllTutors,
   getSingleTutor,
+  createTutorProfile,
 };

@@ -1,8 +1,8 @@
 model ReviewEntity {
-  id String @id
+  id String @id  @default(uuid())
 
   bookingId String  @unique
-  booking   Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  booking   BookingEntity @relation(fields: [bookingId], references: [id], onDelete: Cascade)
 
   studentId String
   student   User   @relation("studentReviews", fields: [studentId], references: [id], onDelete: Cascade)

@@ -1,5 +1,5 @@
 model User {
-  id            String  @id
+  id            String  @id 
   name          String
   email         String
   emailVerified Boolean @default(false)
@@ -15,7 +15,7 @@ model User {
   status         UserStatusEnum      @default(ACTIVE)
   phone          String?
   tutorProfile   TutorProfileEntity?
-  bookings       Booking[]
+  bookings       BookingEntity[]
   reviewEntities ReviewEntity[]      @relation("studentReviews")
 
   @@unique([email])

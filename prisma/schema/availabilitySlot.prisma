@@ -1,5 +1,5 @@
 model AvailabilitySlotEntity {
-  id String @id @default(cuid())
+  id String @id  @default(uuid())
 
   tutorProfileId String
   tutorProfile   TutorProfileEntity @relation(fields: [tutorProfileId], references: [id], onDelete: Cascade)
@@ -10,7 +10,7 @@ model AvailabilitySlotEntity {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  booking   Booking?
+  booking   BookingEntity?
 
   @@map("availabilitySlots")
 }

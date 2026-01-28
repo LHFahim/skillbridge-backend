@@ -3,6 +3,7 @@ import {
   CurrencyEnum,
   Prisma,
 } from "../../../prisma/generated/prisma/client";
+import { ICreateTutorProfile } from "../../interfaces/tutor.interface";
 import { prisma } from "../../lib/prisma";
 
 const getAllTutors = async ({
@@ -169,7 +170,43 @@ const getSingleTutor = async (tutorProfileId: string) => {
   });
 };
 
+export const createTutorProfile = async (
+  userId: string,
+  data: ICreateTutorProfile,
+) => {
+  const { hourlyRate, yearsExperience, categories } = data;
+
+  const existingProfile = await prisma.tutorProfileEntity.findUnique({
+    where: { userId },
+  });
+
+  if (existingProfile) {
+    throw new Error("Tutor profile already exists");
+  }
+
+  const tutorProfile = await prisma.tutorProfileEntity.create({
+    data: {
+      userId,
+      hourlyRate,
+      currency: CurrencyEnum.BDT,
+      yearsExperience,
+      isActive: true,
+      ...(categories?.length
+        ? { categories: { connect: categories.map((id) => ({ id })) } }
+        : {}),
+      // categories: categories?.length
+      //   ? {
+      //       connect: categories.map((id) => ({ id })),
+      //     }
+      //   : undefined,
+    },
+  });
+
+  return tutorProfile;
+};
+
 export const tutorService = {
   getAllTutors,
   getSingleTutor,
+  createTutorProfile,
 };

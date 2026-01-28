@@ -1,5 +1,5 @@
 model TutorProfileEntity {
-  id     String @id
+  id     String @id  @default(uuid())
   userId String @unique
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -14,7 +14,7 @@ model TutorProfileEntity {
   createdAt         DateTime                 @default(now())
   updatedAt         DateTime                 @updatedAt
   availabilitySlots AvailabilitySlotEntity[]
-  bookings          Booking[]
+  bookings          BookingEntity[]
   reviewEntities    ReviewEntity[]
 
   @@index([userId])

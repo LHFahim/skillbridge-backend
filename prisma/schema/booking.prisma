@@ -10,8 +10,8 @@ enum CancelledByEnum {
   ADMIN
 }
 
-model Booking {
-  id String @id
+model BookingEntity {
+  id String @id  @default(uuid())
 
   studentId String
   student   User   @relation(fields: [studentId], references: [id], onDelete: Cascade)
