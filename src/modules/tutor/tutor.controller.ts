@@ -95,8 +95,25 @@ export const createTutorProfile = async (req: Request, res: Response) => {
   }
 };
 
+const updateTutorProfile = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.id;
+
+    const result = await tutorService.updateTutorProfile(userId, req.body);
+
+    return res.status(200).json(result);
+  } catch (e: any) {
+    return res.status(400).json({
+      error: "Tutor profile update failed",
+
+      details: e?.message ?? e,
+    });
+  }
+};
+
 export const tutorController = {
   getAllTutors,
   getSingleTutor,
   createTutorProfile,
+  updateTutorProfile,
 };

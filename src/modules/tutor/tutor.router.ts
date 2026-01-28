@@ -18,4 +18,10 @@ router.post(
   tutorController.createTutorProfile,
 );
 
+router.patch(
+  "/",
+  authMiddleware(UserRolesEnum.TUTOR),
+  tutorController.updateTutorProfile,
+);
+
 export const tutorRouter: Router = router;

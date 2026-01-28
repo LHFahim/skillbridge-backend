@@ -3,7 +3,10 @@ import {
   CurrencyEnum,
   Prisma,
 } from "../../../prisma/generated/prisma/client";
-import { ICreateTutorProfile } from "../../interfaces/tutor.interface";
+import {
+  ICreateTutorProfile,
+  IUpdateTutorProfile,
+} from "../../interfaces/tutor.interface";
 import { prisma } from "../../lib/prisma";
 
 const getAllTutors = async ({
@@ -170,7 +173,7 @@ const getSingleTutor = async (tutorProfileId: string) => {
   });
 };
 
-export const createTutorProfile = async (
+const createTutorProfile = async (
   userId: string,
   data: ICreateTutorProfile,
 ) => {
@@ -205,8 +208,52 @@ export const createTutorProfile = async (
   return tutorProfile;
 };
 
+const updateTutorProfile = async (
+  userId: string,
+  data: IUpdateTutorProfile,
+) => {
+  const existing = await prisma.tutorProfileEntity.findUnique({
+    where: { userId },
+    select: { id: true },
+  });
+
+  if (!existing) {
+    throw new Error("Tutor profile not found");
+  }
+
+  const { categoryIds, ...rest } = data;
+
+  const updateData: any = {
+    ...(typeof rest.hourlyRate === "number"
+      ? { hourlyRate: rest.hourlyRate }
+      : {}),
+    ...(rest.currency ? { currency: rest.currency } : {}),
+    ...(typeof rest.yearsExperience === "number"
+      ? { yearsExperience: rest.yearsExperience }
+      : {}),
+    ...(typeof rest.isActive === "boolean" ? { isActive: rest.isActive } : {}),
+  };
+
+  if (Array.isArray(categoryIds)) {
+    updateData.categories = {
+      set: categoryIds.map((id) => ({ id })),
+    };
+  }
+
+  const res = await prisma.tutorProfileEntity.update({
+    where: { userId },
+    data: updateData,
+    include: {
+      categories: true,
+    },
+  });
+
+  return res;
+};
+
 export const tutorService = {
   getAllTutors,
   getSingleTutor,
   createTutorProfile,
+  updateTutorProfile,
 };
