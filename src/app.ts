@@ -7,6 +7,7 @@ import { notFoundHandler } from "./middlewares/notFound";
 import { availabilitySlotRouter } from "./modules/availability/availability.router";
 import { bookingRouter } from "./modules/booking/booking.router";
 import { categoryRouter } from "./modules/category/category.router";
+import { reviewRouter } from "./modules/review/review.router";
 import { tutorRouter } from "./modules/tutor/tutor.router";
 import { userRouter } from "./modules/user/user.router";
 
@@ -30,6 +31,7 @@ app.use("/api/tutors", tutorRouter);
 app.use("/api/categories", categoryRouter);
 app.use("/api/availability", availabilitySlotRouter);
 app.use("/api/bookings", bookingRouter);
+app.use("/api/reviews", reviewRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello, World!");
