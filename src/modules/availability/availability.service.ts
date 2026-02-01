@@ -100,8 +100,8 @@ const createAvailabilitySlot = async (
     throw new Error("Tutor profile not found");
   }
 
-  const startTime = new Date(slot.startTime);
-  const endTime = new Date(slot.endTime);
+  const startTime = new Date(slot.startAt);
+  const endTime = new Date(slot.endAt);
 
   if (startTime >= endTime) {
     throw new Error("End time must be greater than start time");
@@ -121,8 +121,8 @@ const updateAvailabilitySlot = async (
   userId: string,
   slotId: string,
   payload: Partial<{
-    startTime: Date;
-    endTime: Date;
+    startAt: Date;
+    endAt: Date;
     status: AvailabilityStatusEnum;
   }>,
 ) => {
@@ -147,12 +147,10 @@ const updateAvailabilitySlot = async (
     throw new Error("Booked slots cannot be modified");
   }
 
-  const nextStart = payload.startTime
-    ? new Date(payload.startTime)
+  const nextStart = payload.startAt
+    ? new Date(payload.startAt)
     : existingSlot.startAt;
-  const nextEnd = payload.endTime
-    ? new Date(payload.endTime)
-    : existingSlot.endAt;
+  const nextEnd = payload.endAt ? new Date(payload.endAt) : existingSlot.endAt;
 
   if (nextStart >= nextEnd) {
     throw new Error("End time must be greater than start time");
@@ -161,8 +159,8 @@ const updateAvailabilitySlot = async (
   return prisma.availabilitySlotEntity.update({
     where: { id: slotId },
     data: {
-      ...(payload.startTime ? { startAt: nextStart } : {}),
-      ...(payload.endTime ? { endAt: nextEnd } : {}),
+      ...(payload.startAt ? { startAt: nextStart } : {}),
+      ...(payload.endAt ? { endAt: nextEnd } : {}),
       ...(payload.status ? { status: payload.status } : {}),
     },
   });

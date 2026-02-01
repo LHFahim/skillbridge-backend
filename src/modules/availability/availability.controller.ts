@@ -71,7 +71,7 @@ const getSingleAvailabilitySlot = async (req: Request, res: Response) => {
 
 const createAvailabilitySlots = async (req: Request, res: Response) => {
   const userId = req.user?.id as string;
-  const { slot } = req.body;
+  const slot = req.body;
 
   const result = await availabilitySlotService.createAvailabilitySlot(
     userId,
