@@ -3,13 +3,14 @@ import { prisma } from "../../lib/prisma";
 
 const getAllCategories = async () => {
   return prisma.categoryEntity.findMany({
+    where: { isDeleted: false },
     orderBy: { name: "asc" },
   });
 };
 
 const getSingleCategory = async (id: string) => {
   return prisma.categoryEntity.findUnique({
-    where: { id },
+    where: { id, isDeleted: false },
   });
 };
 

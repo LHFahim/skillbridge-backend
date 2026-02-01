@@ -1,4 +1,8 @@
-import { Prisma, UserRolesEnum } from "../../../prisma/generated/prisma/client";
+import {
+  Prisma,
+  UserRolesEnum,
+  UserStatusEnum,
+} from "../../../prisma/generated/prisma/client";
 import { prisma } from "../../lib/prisma";
 
 const getMyProfile = async (id: string) => {
@@ -92,9 +96,14 @@ const updateUserStatus = async (userId: string, status: string) => {
     throw new Error("User not found");
   }
 
+  let data: { status: UserStatusEnum } = { status: UserStatusEnum.ACTIVE };
+  if (user.status === UserStatusEnum.ACTIVE) {
+    data.status = UserStatusEnum.BANNED;
+  }
+
   const updatedUser = await prisma.user.update({
     where: { id: userId },
-    data: { status: status as any },
+    data: data,
     select: {
       id: true,
       name: true,
