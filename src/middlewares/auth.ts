@@ -28,11 +28,11 @@ export const authMiddleware = (...roles: UserRolesEnum[]) => {
           .json({ success: false, message: "Unauthorized" });
       }
 
-      if (session.user.emailVerified === false) {
-        return res
-          .status(403)
-          .json({ success: false, message: "Email not verified" });
-      }
+      // if (session.user.emailVerified === false) {
+      //   return res
+      //     .status(403)
+      //     .json({ success: false, message: "Email not verified" });
+      // }
 
       req.user = {
         id: session.user.id,
