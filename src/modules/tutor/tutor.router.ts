@@ -10,6 +10,8 @@ router.get(
   tutorController.getAllTutors,
 );
 
+router.get("/by-user/:userId", tutorController.getTutorByUserId);
+
 router.get("/:id", tutorController.getSingleTutor);
 
 router.post(

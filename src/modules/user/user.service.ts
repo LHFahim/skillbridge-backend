@@ -121,8 +121,53 @@ const updateUserStatus = async (userId: string, status: string) => {
   return updatedUser;
 };
 
+const updateMyProfile = async (
+  userId: string,
+  data: { name?: string; image?: string | null; phone?: string | null },
+) => {
+  const updateData: {
+    name?: string;
+    image?: string | null;
+    phone?: string | null;
+  } = {};
+
+  if (typeof data.name === "string" && data.name.trim() !== "") {
+    updateData.name = data.name.trim();
+  }
+
+  if (data.image !== undefined) {
+    updateData.image = data.image;
+  }
+
+  if (data.phone !== undefined) {
+    updateData.phone = data.phone;
+  }
+
+  if (Object.keys(updateData).length === 0) {
+    throw new Error("No valid fields to update");
+  }
+
+  return prisma.user.update({
+    where: { id: userId },
+    data: updateData,
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      emailVerified: true,
+      image: true,
+      role: true,
+      status: true,
+      phone: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
+};
+
 export const UserService = {
   getMyProfile,
   getAllUsers,
   updateUserStatus,
+  updateMyProfile,
 };

@@ -77,6 +77,27 @@ const getSingleTutor = async (req: Request, res: Response) => {
   }
 };
 
+const getTutorByUserId = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId!;
+
+    const tutor = await tutorService.getTutorByUserId(userId);
+
+    if (!tutor) {
+      return res.status(404).json({
+        message: "Tutor not found",
+      });
+    }
+
+    return res.status(200).json(tutor);
+  } catch (e) {
+    return res.status(400).json({
+      error: "Fetching tutor failed",
+      details: e,
+    });
+  }
+};
+
 export const createTutorProfile = async (req: Request, res: Response) => {
   try {
     const userId = (req as any).user.id;
@@ -114,6 +135,7 @@ const updateTutorProfile = async (req: Request, res: Response) => {
 export const tutorController = {
   getAllTutors,
   getSingleTutor,
+  getTutorByUserId,
   createTutorProfile,
   updateTutorProfile,
 };

@@ -16,6 +16,40 @@ const getMyProfile = async (req: Request, res: Response) => {
   }
 };
 
+const updateMyProfile = async (req: Request, res: Response) => {
+  try {
+    const userId = req.user?.id as string;
+
+    const name = typeof req.body.name === "string" ? req.body.name : undefined;
+
+    const image =
+      typeof req.body.image === "string" || req.body.image === null
+        ? req.body.image
+        : undefined;
+
+    const phone =
+      typeof req.body.phone === "string" || req.body.phone === null
+        ? req.body.phone
+        : undefined;
+
+    const result = await UserService.updateMyProfile(userId, {
+      name,
+      image,
+      phone,
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: result,
+    });
+  } catch (e) {
+    return res.status(400).json({
+      error: "Profile update failed",
+      details: e,
+    });
+  }
+};
+
 const getAllUsers = async (req: Request, res: Response) => {
   try {
     const search =
@@ -91,6 +125,7 @@ const updateUserStatus = async (req: Request, res: Response) => {
 
 export const UserController = {
   getMyProfile,
+  updateMyProfile,
   getAllUsers,
   updateUserStatus,
 };

@@ -15,6 +15,16 @@ router.get(
   UserController.getMyProfile,
 );
 
+router.patch(
+  "/me",
+  authMiddleware(
+    UserRolesEnum.ADMIN,
+    UserRolesEnum.STUDENT,
+    UserRolesEnum.TUTOR,
+  ),
+  UserController.updateMyProfile,
+);
+
 router.get(
   "/",
   authMiddleware(UserRolesEnum.ADMIN),

@@ -174,6 +174,14 @@ const getSingleTutor = async (tutorProfileId: string) => {
   });
 };
 
+const getTutorByUserId = async (userId: string) => {
+  return prisma.tutorProfileEntity.findFirst({
+    where: {
+      userId,
+    },
+  });
+};
+
 const createTutorProfile = async (
   userId: string,
   data: ICreateTutorProfile,
@@ -255,6 +263,7 @@ const updateTutorProfile = async (
 export const tutorService = {
   getAllTutors,
   getSingleTutor,
+  getTutorByUserId,
   createTutorProfile,
   updateTutorProfile,
 };
