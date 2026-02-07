@@ -68,7 +68,9 @@ const getAllAvailabilitySlots = async ({
       tutorProfile: {
         select: {
           id: true,
-          user: { select: { id: true, name: true, email: true } },
+          user: { select: { id: true, name: true, email: true, image: true } },
+          categories: { select: { id: true, name: true } },
+          yearsExperience: true,
         },
       },
     },
@@ -178,6 +180,14 @@ export const getSingleAvailabilitySlot = async (
 
   const slot = await prisma.availabilitySlotEntity.findFirst({
     where: { id: slotId, tutorProfileId: tutor.id },
+    include: {
+      tutorProfile: {
+        select: {
+          id: true,
+          user: { select: { id: true, name: true, email: true, image: true } },
+        },
+      },
+    },
   });
 
   if (!slot) throw new Error("Availability slot not found");

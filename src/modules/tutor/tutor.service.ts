@@ -105,7 +105,8 @@ const getAllTutors = async ({
         },
       },
       categories: true,
-      // availabilitySlots: true,
+      availabilitySlots: true,
+      reviewEntities: true,
       // bookings: true,
     },
   });

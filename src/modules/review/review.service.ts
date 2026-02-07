@@ -1,5 +1,4 @@
 import { Prisma } from "../../../prisma/generated/prisma/client";
-import { BookingStatusEnum } from "../../../prisma/generated/prisma/enums";
 import { prisma } from "../../lib/prisma";
 
 const createReview = async ({
@@ -16,7 +15,7 @@ const createReview = async ({
   if (!Number.isInteger(rating) || rating < 1 || rating > 5)
     throw new Error("Rating must be an integer between 1 and 5");
 
-  return prisma.$transaction(async (tx) => {
+  return await prisma.$transaction(async (tx) => {
     const booking = await tx.bookingEntity.findFirst({
       where: { id: bookingId, studentId },
       select: {
@@ -25,11 +24,10 @@ const createReview = async ({
         tutorProfileId: true,
       },
     });
-
     if (!booking) throw new Error("Booking not found");
 
-    if (booking.status !== BookingStatusEnum.COMPLETED)
-      throw new Error("Only completed bookings can be reviewed");
+    // if (booking.status !== BookingStatusEnum.COMPLETED)
+    //   throw new Error("Only completed bookings can be reviewed");
 
     const existing = await tx.reviewEntity.findUnique({
       where: { bookingId },

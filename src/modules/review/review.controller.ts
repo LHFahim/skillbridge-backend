@@ -7,8 +7,7 @@ const createReview = async (req: Request, res: Response) => {
     const studentId = req.user?.id as string;
 
     const bookingId =
-      typeof req.body.bookingId === "string" &&
-      req.body.bookingId.trim() !== ""
+      typeof req.body.bookingId === "string" && req.body.bookingId.trim() !== ""
         ? req.body.bookingId.trim()
         : undefined;
 
