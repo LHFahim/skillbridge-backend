@@ -35,6 +35,12 @@ router.get(
   bookingController.getTutorBookings,
 );
 
+router.get(
+  "/admin-bookings",
+  authMiddleware(UserRolesEnum.ADMIN),
+  bookingController.getAllBookingsForAdmin,
+);
+
 router.patch(
   "/tutor-bookings/:id/complete",
   authMiddleware(UserRolesEnum.TUTOR),

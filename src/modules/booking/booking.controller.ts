@@ -168,6 +168,33 @@ const completeBooking = async (req: Request, res: Response) => {
   }
 };
 
+const getAllBookingsForAdmin = async (req: Request, res: Response) => {
+  try {
+    const status =
+      typeof req.query.status === "string" ? req.query.status : undefined;
+
+    const { page, limit, skip, sortBy, sortOrder } = paginationSortingHelper(
+      req.query,
+    );
+
+    const result = await bookingService.getAllBookingsForAdmin({
+      status,
+      page,
+      limit,
+      skip,
+      sortBy,
+      sortOrder,
+    });
+
+    return res.status(200).json(result);
+  } catch (e) {
+    return res.status(400).json({
+      error: "Fetching bookings failed",
+      details: e,
+    });
+  }
+};
+
 export const bookingController = {
   createBooking,
   getMyBookings,
@@ -175,4 +202,5 @@ export const bookingController = {
   cancelMyBooking,
   getTutorBookings,
   completeBooking,
+  getAllBookingsForAdmin,
 };

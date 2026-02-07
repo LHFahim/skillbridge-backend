@@ -292,6 +292,64 @@ const completeBookingByTutor = async ({
   });
 };
 
+const getAllBookingsForAdmin = async ({
+  status,
+  page,
+  limit,
+  skip,
+  sortBy,
+  sortOrder,
+}: {
+  status: string | undefined;
+  page: number;
+  limit: number;
+  skip: number;
+  sortBy: string;
+  sortOrder: string;
+}) => {
+  const queries: Prisma.BookingEntityWhereInput[] = [];
+
+  if (
+    status &&
+    Object.values(BookingStatusEnum).includes(status as BookingStatusEnum)
+  ) {
+    queries.push({ status: status as BookingStatusEnum });
+  }
+
+  const where: Prisma.BookingEntityWhereInput =
+    queries.length > 0 ? { AND: queries } : {};
+
+  const data = await prisma.bookingEntity.findMany({
+    take: limit,
+    skip,
+    where,
+    orderBy: { [sortBy]: sortOrder },
+    include: {
+      student: { select: { id: true, name: true, email: true } },
+      tutorProfile: {
+        include: {
+          user: { select: { id: true, name: true, email: true } },
+          categories: true,
+        },
+      },
+      slot: true,
+      reviewEntity: true,
+    },
+  });
+
+  const total = await prisma.bookingEntity.count({ where });
+
+  return {
+    data,
+    pagination: {
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    },
+  };
+};
+
 export const bookingService = {
   createBooking,
   getMyBookings,
@@ -299,4 +357,5 @@ export const bookingService = {
   cancelBookingByStudent,
   getTutorBookings,
   completeBookingByTutor,
+  getAllBookingsForAdmin,
 };
