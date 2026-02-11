@@ -13,12 +13,30 @@ import { userRouter } from "./modules/user/user.router";
 
 const app = express();
 
-app.use(
-  cors({
-    origin: process.env.APP_URL,
-    credentials: true,
-  }),
-);
+// app.use(
+//   cors({
+//     origin: process.env.APP_URL,
+//     credentials: true,
+//   }),
+// );
+
+const allowedOrigins = ["http://localhost:3000", process.env.APP_URL].filter(
+  Boolean,
+) as string[];
+
+const corsMiddleware = cors({
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(new Error(`CORS blocked for origin: ${origin}`));
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+});
+
+app.use(corsMiddleware);
+app.options("*", corsMiddleware);
 
 app.all("/api/auth/*splat", toNodeHandler(auth));
 

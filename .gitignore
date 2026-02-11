@@ -9,3 +9,7 @@ prisma/generated
 
 temp.ts
 
+dist
+.vercel
+api
+.vercel
