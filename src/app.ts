@@ -20,9 +20,11 @@ const app = express();
 //   }),
 // );
 
-const allowedOrigins = ["http://localhost:3000", process.env.APP_URL].filter(
-  Boolean,
-) as string[];
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://skillbridge-frontend-tau.vercel.app",
+  process.env.APP_URL,
+].filter(Boolean) as string[];
 
 const corsMiddleware = cors({
   origin: (origin, callback) => {
@@ -36,7 +38,6 @@ const corsMiddleware = cors({
 });
 
 app.use(corsMiddleware);
-app.options("*", corsMiddleware);
 
 app.all("/api/auth/*splat", toNodeHandler(auth));
 
